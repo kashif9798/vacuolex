@@ -1,0 +1,10 @@
+{
+  "menu": [
+    {
+      "url": "/admin/dashboard",
+      "name": "Dashboard",
+      "icon": "home",
+      "slug": "dashboard"
+    }
+  ]
+}
