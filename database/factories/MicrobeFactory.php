@@ -27,7 +27,7 @@ class MicrobeFactory extends Factory
             'title'             => $this->faker->word,
             'description'       => $this->faker->paragraph(1),
             'image'             => 'https://via.placeholder.com/720',
-            'user_id'           => 1,
+            'admin_id'           => 1,
             'sub_category_id'   => $sub->id
         ];
     }

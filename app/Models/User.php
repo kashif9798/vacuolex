@@ -39,17 +39,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-
-    /**
-     * Get all of the microbes for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function microbes_written(): HasMany
-    {
-        return $this->hasMany(Microbe::class);
-    }
-
     /**
      * The microbes_collected that belong to the User
      *

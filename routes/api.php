@@ -22,7 +22,7 @@ use App\Http\Controllers\SubCategoryController;
 //     return $request->user();
 // });
 
-Route::get('/categories',[CategoryController::class, 'index']);
+Route::get('/categories',[CategoryController::class, 'indexApi']);
 Route::get('/categories/{category}',[CategoryController::class, 'microbes']);
 
 Route::get('/sub-categories/{subCategory}',[SubCategoryController::class, 'microbes']);

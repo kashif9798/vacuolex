@@ -68,6 +68,16 @@ $configData = Helper::applClasses();
                 <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                     <h2 class="card-title font-weight-bold mb-1">Welcome to VacuoleX! 👋</h2>
                     <p class="card-text mb-2">Please sign-in to your account</p>
+                    @if(session('user_updated'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert-body">
+                                {!!session('user_updated')!!}
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                     <form class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">

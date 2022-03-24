@@ -5,6 +5,72 @@
       "name": "Dashboard",
       "icon": "home",
       "slug": "dashboard"
+    },
+    {
+      "name": "Categories",
+      "icon": "grid",
+      "dropdown": "1",
+      "slug": "categories",
+      "submenu": [
+        {
+          "url": "admin/categories/create",
+          "name": "Create",
+          "icon": "circle",
+          "slug": "categories.create"
+        },
+        {
+          "url": "/admin/categories",
+          "name": "Categories",
+          "icon": "circle",
+          "slug": "categories.index"
+        }
+      ]
+    },
+    {
+      "name": "Subcategories",
+      "icon": "layers",
+      "dropdown": "1",
+      "slug": "subcategories",
+      "submenu": [
+        {
+          "url": "admin/subcategories/create",
+          "name": "Create",
+          "icon": "circle",
+          "slug": "subcategories.create"
+        },
+        {
+          "url": "/admin/subcategories",
+          "name": "Subcategories",
+          "icon": "circle",
+          "slug": "subcategories.index"
+        }
+      ]
+    },
+    {
+      "name": "Admins",
+      "icon": "users",
+      "dropdown": "1",
+      "slug": "admins",
+      "submenu": [
+        {
+          "url": "admin/admins/create",
+          "name": "Create",
+          "icon": "circle",
+          "slug": "admins.create"
+        },
+        {
+          "url": "/admin/admins",
+          "name": "Admins",
+          "icon": "circle",
+          "slug": "admins.index"
+        }
+      ]
+    },
+    {
+      "url": "/admin/subscribers",
+      "name": "Subscribers",
+      "icon": "user-check",
+      "slug": "subscribers.index"
     }
   ]
 }

@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
@@ -19,6 +22,10 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 */
 
 Route::get("/", function(){
+  return redirect()->route("login.form");
+});
+
+Route::get("/login", function(){
   return redirect()->route("login.form");
 });
 
@@ -42,4 +49,19 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
 Route::put('/profile/update', [AdminController::class, 'profileUpdate'])->name('profile.update');
 
+// Category Routes
+Route::resource("categories", CategoryController::class)->except(["show"]);
+Route::post("categories/search", [CategoryController::class, "index"])->name("categories.search");
+
+// SubCategory Routes
+Route::resource("subcategories", SubCategoryController::class)->except(["show"]);
+Route::post("subcategories/search", [SubCategoryController::class, "index"])->name("subcategories.search");
+
+// Admin Routes
+Route::resource("admins", AdminController::class)->except(["show"]);
+Route::post("admins/search", [AdminController::class, "index"])->name("admins.search");
+
+// Subscribers Routes
+Route::resource("subscribers", UserController::class)->only(["index", "destroy"]);
+Route::post("subscribers/search", [UserController::class, "index"])->name("subscribers.search");
 });

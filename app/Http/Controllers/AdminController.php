@@ -2,22 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth");
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->flash();
+        
+        $admins = Admin::withCount(['microbes'])
+        ->with(["role"])
+        ->when(!empty($request->search), function($q) use ($request){
+            $q->where('name','LIKE', '%'.$request->search.'%')
+               ->orWhere('email','LIKE', '%'.$request->search.'%')
+               ->orWhereHas('role', function($query) use ($request){
+                    $query->where('title','LIKE', '%'.$request->search.'%');
+               });
+        })
+        ->orderBy('microbes_count', 'desc')
+        ->paginate(10);
+
+        $breadcrumbs = [
+            ['name' => "Admins"],
+            ['name' => "Admins"]
+        ];
+
+        return view('/pages/admins/index', [
+            'breadcrumbs'   => $breadcrumbs,
+            "admins"        => $admins,
+        ]);
     }
 
     /**
@@ -27,7 +53,17 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        $breadcrumbs = [
+            ['name' => "Admins"],
+            ['name' => "Create"]
+        ];
+
+        $roles = Role::select("id","title")->get();
+
+        return view('/pages/admins/create', [
+            'breadcrumbs' => $breadcrumbs,
+            "roles"  => $roles,
+        ]);
     }
 
     /**
@@ -38,19 +74,36 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
+            "image" => ["nullable", "image", "max:10000"],
+            'password' => ['required', 'string', 'min:8'],
+            "role_id"   => ['required', "exists:roles,id"],
+        ];
+        $this->validate($request, $rules);
+
+
+        $create = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => bcrypt($request->password),
+            "role_id" => $request->role_id,
+        ];
+
+        if(!empty($request->image)){
+            $path = $request->file('image')->store('profile-pictures', "public");
+            $create["image"] = asset("storage") . "/" . $path ;
+
+        }
+
+        Admin::create($create);
+
+        session()->flash("admin_alert", "User <strong>" . $request->name . "</strong> successfully created.");
+
+        return redirect()->route("admins.index");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +113,18 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        //
+        $breadcrumbs = [
+            ['name' => "Admins"],
+            ['name' => "Create"]
+        ];
+
+        $roles = Role::select("id","title")->get();
+
+        return view('/pages/admins/edit', [
+            'breadcrumbs' => $breadcrumbs,
+            "roles"  => $roles,
+            "admin"  => $admin,
+        ]);
     }
 
     /**
@@ -72,7 +136,36 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        //
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins,email,'. $admin->id],
+            "image" => ["nullable", "image", "max:10000"],
+            'password' => ['nullable', 'string', 'min:8'],
+            "role_id"   => ['required', "exists:roles,id"],
+        ];
+        $this->validate($request, $rules);
+
+
+        $updated = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "role_id" => $request->role_id,
+        ];
+
+        if(!empty($request->image)){
+            $path = $request->file('image')->store('profile-pictures', "public");
+            $updated["image"] = asset("storage") . "/" . $path ;
+        }
+
+        if(!empty($request->password)){
+            $updated["password"] = bcrypt($request->password);
+        }
+
+        $admin->update($updated);
+
+        session()->flash("admin_alert", "User <strong>" . $request->name . "</strong> successfully updated.");
+
+        return redirect()->route("admins.index");
     }
 
     /**
@@ -83,7 +176,11 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        //
+        $admin->delete();
+
+        session()->flash("admin_alert", "User <strong>" . $admin->name . "</strong> successfully deleted.");
+
+        return redirect()->route("admins.index");
     }
 
     /**
@@ -124,7 +221,7 @@ class AdminController extends Controller
 
         if(!empty($request->image)){
             $path = $request->file('image')->store('profile-pictures', "public");
-            $updated["image"] = Storage::disk('public')->path($path);
+            $updated["image"] = asset("storage") . "/" . $path ;
 
         }
 
@@ -136,7 +233,7 @@ class AdminController extends Controller
 
         Session::flush();
 
-        $request->flash("user_updated", "User successfully updated. Kindly login again.");
+        session()->flash("user_updated", "Profile successfully updated. Kindly login again.");
         
         Auth::logout();
 

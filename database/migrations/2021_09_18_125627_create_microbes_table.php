@@ -18,11 +18,11 @@ class CreateMicrobesTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('image');
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('admin_id')->unsigned();
             $table->bigInteger('sub_category_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
 
         });
