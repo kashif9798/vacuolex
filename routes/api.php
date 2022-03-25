@@ -28,9 +28,9 @@ Route::get('/categories/{category}',[CategoryController::class, 'microbes']);
 Route::get('/sub-categories/{subCategory}',[SubCategoryController::class, 'microbes']);
 
 
-Route::get('/microbes', [MicrobeController::class, 'index']);
-Route::get('/microbes/{microbe}', [MicrobeController::class, 'show']);
-Route::post('/microbes/search', [MicrobeController::class, 'search']);
+Route::get('/microbes', [MicrobeController::class, 'indexApi']);
+Route::get('/microbes/{microbe}', [MicrobeController::class, 'showApi']);
+Route::post('/microbes/search', [MicrobeController::class, 'searchApi']);
 
 Route::post('/login',[AuthController::class, 'login']);
 

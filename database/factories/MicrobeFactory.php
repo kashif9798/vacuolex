@@ -25,7 +25,8 @@ class MicrobeFactory extends Factory
         $sub = SubCategory::inRandomOrder()->first();
         return [
             'title'             => $this->faker->word,
-            'description'       => $this->faker->paragraph(1),
+            'excerpt'           => $this->faker->paragraph(1),
+            'description'       => $this->faker->paragraph(4),
             'image'             => 'https://via.placeholder.com/720',
             'admin_id'           => 1,
             'sub_category_id'   => $sub->id

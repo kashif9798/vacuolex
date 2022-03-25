@@ -13,7 +13,100 @@ class MicrobeController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
+    {
+        $request->flash();
+        
+        $microbes = Microbe::select("id", "title", "image", "admin_id", "sub_category_id")
+        ->withCount(['comments'])
+        ->with(["author:id,name", "subcategory:id,title,category_id", "subcategory.category:id,title"])
+        ->when(!empty($request->search), function($query) use ($request){
+            $query->where('title','LIKE', '%'.$request->search.'%')
+               ->orWhereHas('subcategory', function($q) use ($request){
+                    $q->where('title','LIKE', '%'.$request->search.'%');
+                })
+               ->orWhereHas('subcategory.category', function($q) use ($request){
+                    $q->where('title','LIKE', '%'.$request->search.'%');
+                })
+                ->orWhereHas('author', function($q) use ($request){
+                    $q->where('name','LIKE', '%'.$request->search.'%');
+                });
+        })
+        ->orderBy('comments_count', 'desc')
+        ->paginate(10);
+
+        $breadcrumbs = [
+            ['name' => "Microbes"],
+            ['name' => "Microbes"]
+        ];
+
+        return view('/pages/microbes/index', [
+            'breadcrumbs'   => $breadcrumbs,
+            "microbes"      => $microbes,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Microbe $microbe)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Microbe $microbe)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Microbe $microbe)
+    {
+        //
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexApi()
     {
         $microbes = Microbe::paginate(config('paginate.per_page'));
 
@@ -41,7 +134,7 @@ class MicrobeController extends ApiController
      * @param  \App\Models\Microbe  $microbe
      * @return \Illuminate\Http\Response
      */
-    public function show(Microbe $microbe)
+    public function showApi(Microbe $microbe)
     {
         if($microbe->users_collected_microbes->isNotEmpty()){
             $usersID = $microbe->users_collected_microbes->pluck('id')->toArray();
@@ -60,7 +153,7 @@ class MicrobeController extends ApiController
     /**
      * Search filter
      */
-    public function search(Microbe $microbe, Request $request)
+    public function searchApi(Microbe $microbe, Request $request)
     {
         $microbes = Microbe::where('title','like','%'.$request->search.'%')->select('id','title', 'image')->get();
         

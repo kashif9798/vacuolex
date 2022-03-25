@@ -47,6 +47,26 @@
       ]
     },
     {
+      "name": "Microbes",
+      "icon": "message-square",
+      "dropdown": "1",
+      "slug": "microbes",
+      "submenu": [
+        {
+          "url": "admin/microbes/create",
+          "name": "Create",
+          "icon": "circle",
+          "slug": "microbes.create"
+        },
+        {
+          "url": "/admin/microbes",
+          "name": "Microbes",
+          "icon": "circle",
+          "slug": "microbes.index"
+        }
+      ]
+    },
+    {
       "name": "Admins",
       "icon": "users",
       "dropdown": "1",

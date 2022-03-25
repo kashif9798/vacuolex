@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\MicrobeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +65,9 @@ Route::post("admins/search", [AdminController::class, "index"])->name("admins.se
 // Subscribers Routes
 Route::resource("subscribers", UserController::class)->only(["index", "destroy"]);
 Route::post("subscribers/search", [UserController::class, "index"])->name("subscribers.search");
+
+// Microbes Routes
+Route::resource("microbes", MicrobeController::class)->except(["show"]);
+Route::post("microbes/search", [MicrobeController::class, "index"])->name("microbes.search");
+
 });

@@ -16,8 +16,9 @@ class CreateMicrobesTable extends Migration
         Schema::create('microbes', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('excerpt')->nullable();
             $table->text('description');
-            $table->string('image');
+            $table->text('image');
             $table->bigInteger('admin_id')->unsigned();
             $table->bigInteger('sub_category_id')->unsigned();
             $table->timestamps();
