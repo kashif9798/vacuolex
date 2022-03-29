@@ -43,6 +43,7 @@
           <th>Subcategory</th>
           <th>Comments</th>
           <th>Ratings</th>
+          <th>Created At</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -74,23 +75,28 @@
                 @endif
 
               </td>
+              <td>{{ $microbe->created_at->diffForHumans() }}</td>
               <td>
+                @if (auth()->user()->role->level == 1 || auth()->user()->id == $microbe->admin_id)
                   <div class="dropdown">
                     <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
                       <i data-feather="more-vertical"></i>
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{{ route("admins.edit", $microbe) }}">
+                      <a class="dropdown-item" href="{{ route("microbes.edit", $microbe) }}">
                         <i data-feather="edit-2" class="mr-50"></i>
                         <span>Edit</span>
                       </a>
-                        <a type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteAdmin{{ $microbe->id }}">
+                        <a type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteMicrobe{{ $microbe->id }}">
                           <i data-feather="trash" class="mr-50"></i>
                           <span>Delete</span>
                         </a>
                     </div>
                   </div>
-                  {{-- @include("pages.admins.delete") --}}
+                  @include("pages.microbes.delete")
+                @else
+                  -
+                @endif
               </td>
             </tr>
         @endforeach

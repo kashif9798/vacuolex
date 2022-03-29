@@ -3,62 +3,120 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<!-- Kick start -->
-<div class="card">
-  <div class="card-header">
-    <h4 class="card-title">Kick start your next project 🚀</h4>
-  </div>
-  <div class="card-body">
-    <div class="card-text">
-      <p>
-        Getting start with your project custom requirements using a ready template which is quite difficult and time
-        taking process, Vuexy Admin provides useful features to kick start your project development with no efforts !
-      </p>
-      <ul>
-        <li>
-          Vuexy Admin provides you getting start pages with different layouts, use the layout as per your custom
-          requirements and just change the branding, menu &amp; content.
-        </li>
-        <li>
-          Every components in Vuexy Admin are decoupled, it means use use only components you actually need! Remove
-          unnecessary and extra code easily just by excluding the path to specific SCSS, JS file.
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!--/ Kick start -->
-
-<!-- Page layout -->
-<div class="card">
-  <div class="card-header">
-    <h4 class="card-title">What is page layout?</h4>
-  </div>
-  <div class="card-body">
-    <div class="card-text">
-      <p>
-        Starter kit includes pages with different layouts, useful for your next project to start development process
-        from scratch with no time.
-      </p>
-      <ul>
-        <li>Each layout includes required only assets only.</li>
-        <li>
-          Select your choice of layout from starter kit, customize it with optional changes like colors and branding,
-          add required dependency only.
-        </li>
-      </ul>
-      <div class="alert alert-primary" role="alert">
-        <div class="alert-body">
-          <strong>Info:</strong> Please check the &nbsp;<a
-            class="text-primary"
-            href="https://pixinvent.com/demo/vuexy-html-bootstrap-admin-template/documentation/documentation-layouts.html#layout-collapsed-menu"
-            target="_blank"
-            >Layout documentation</a
-          >&nbsp; for more layout options i.e collapsed menu, without menu, empty & blank.
+<!-- Line Chart Card -->
+<div class="row">
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-primary p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="grid" class="font-medium-5"></i>
+          </div>
         </div>
+        <h2 class="font-weight-bolder">{{ $categories }}</h2>
+        <p class="card-text">Categories</p>
       </div>
     </div>
   </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-info p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="layers" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $subcategories }}</h2>
+        <p class="card-text">Subcategories</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-success p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="message-square" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $microbes }}</h2>
+        <p class="card-text">Microbes</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-warning p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="user-check" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $subscribers }}</h2>
+        <p class="card-text">Subscribers</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-warning p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="users" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $admins }}</h2>
+        <p class="card-text">Admins</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-primary p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="refresh-cw" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $collaborators }}</h2>
+        <p class="card-text">Collaborators</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-info p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="message-circle" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $comments }}</h2>
+        <p class="card-text">Total Comments</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-4 col-sm-6">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="avatar bg-light-success p-50 mb-1">
+          <div class="avatar-content">
+            <i data-feather="star" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h2 class="font-weight-bolder">{{ $ratings }}</h2>
+        <p class="card-text">Total Ratings</p>
+      </div>
+    </div>
+  </div>
+
 </div>
 <!--/ Page layout -->
 @endsection

@@ -3,83 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
+use App\Models\Microbe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RatingController extends Controller
+class RatingController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware("auth:sanctum");
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Microbe $microbe)
     {
-        //
-    }
+        $rules = [
+            "rating" => ["required", "numeric", "max:255"],
+        ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Rating $rating)
-    {
-        //
-    }
+        $this->validate($request, $rules);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Rating $rating)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Rating $rating)
-    {
-        //
-    }
+        Rating::updateOrCreate(
+            [
+                "microbe_id" => $microbe->id,
+                "user_id" => Auth::guard('sanctum')->user()->id,
+            ],
+            [
+                "rating" => $request->rating
+            ]
+        );
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Rating $rating)
-    {
-        //
+        $rating= Rating::avg('rating');
+       
+        $rating = round($rating);
+
+        return $this->showMessage([
+            "rating" => $rating,
+        ]);
     }
 }

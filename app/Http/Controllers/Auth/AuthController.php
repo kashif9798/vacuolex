@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\ApiController;
 
 class AuthController extends ApiController
 {
@@ -16,8 +17,10 @@ class AuthController extends ApiController
      */
     public function login(Request $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            $user = Auth::guard('sanctum')->user();
+        $user = User::where('email', $request->email)->first();
+ 
+        if ($user && Hash::check($request->password, $user->password)) {
+            // $user = Auth::guard('sanctum')->user();
             $body['token'] = $user->createToken('myApp')->plainTextToken;
             $body['user'] = $user;
 

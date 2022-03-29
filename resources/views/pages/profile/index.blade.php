@@ -43,7 +43,7 @@
         <p class="lead mt-2">{{ auth()->user()->name }}</p>
       </div>
       
-      <input type="file" name="image" id="image" class="d-none">
+      <input type="file" name="image" id="image" class="d-none" accept="image/*">
       @error('image')
         <strong class="text-danger mt-2">{{ $message }}</strong>
       @enderror

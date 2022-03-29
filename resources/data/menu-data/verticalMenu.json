@@ -71,6 +71,7 @@
       "icon": "users",
       "dropdown": "1",
       "slug": "admins",
+      "adminonly": true,
       "submenu": [
         {
           "url": "admin/admins/create",

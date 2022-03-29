@@ -69,5 +69,7 @@ Route::post("subscribers/search", [UserController::class, "index"])->name("subsc
 // Microbes Routes
 Route::resource("microbes", MicrobeController::class)->except(["show"]);
 Route::post("microbes/search", [MicrobeController::class, "index"])->name("microbes.search");
+Route::post("microbes/repo/images", [MicrobeController::class, "repoImages"])->name("microbes.images");
+
 
 });

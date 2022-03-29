@@ -14,6 +14,7 @@ class AdminController extends Controller
     {
         $this->middleware("auth");
     }
+    
     /**
      * Display a listing of the resource.
      *
@@ -115,7 +116,8 @@ class AdminController extends Controller
     {
         $breadcrumbs = [
             ['name' => "Admins"],
-            ['name' => "Create"]
+            ['link' => "/admin/admins", 'name' => "Admins"],
+            ['name' => "Edit"]
         ];
 
         $roles = Role::select("id","title")->get();

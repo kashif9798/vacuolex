@@ -58,18 +58,22 @@
               </td>
               <td>{{ $subscriber->microbes_collected_count }}</td>
               <td>
-                <div class="dropdown">
-                  <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
-                    <i data-feather="more-vertical"></i>
-                  </button>
-                  <div class="dropdown-menu">
-                      <a type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSubscribers{{ $subscriber->id }}">
-                        <i data-feather="trash" class="mr-50"></i>
-                        <span>Delete</span>
-                      </a>
+                @if (auth()->user()->role->level == 1)
+                  <div class="dropdown">
+                    <button type="button" class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown">
+                      <i data-feather="more-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteSubscribers{{ $subscriber->id }}">
+                          <i data-feather="trash" class="mr-50"></i>
+                          <span>Delete</span>
+                        </a>
+                    </div>
                   </div>
-                </div>
-                @include("pages.subscribers.delete")
+                  @include("pages.subscribers.delete")
+                @else
+                  -
+                @endif
               </td>
             </tr>
         @endforeach

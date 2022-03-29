@@ -3,61 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Microbe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class CommentController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware("auth:sanctum");
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Microbe $microbe)
     {
-        //
-    }
+        $rules = [
+            "comment" => ["required", "string", "max:255"],
+        ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
+        $this->validate($request, $rules);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
+
+        $commentCreated = new Comment();        
+
+        $commentCreated->comment = $request->comment;
+        $commentCreated->microbe_id = $microbe->id;
+        $commentCreated->user_id = Auth::guard('sanctum')->user()->id;
+
+        $commentCreated->save();
+
+
+        $comment = Comment::where("id", $commentCreated->id)
+        ->with(["user:id,name,image"])
+        ->first();
+
+        return $this->showOne($comment);
     }
 
     /**
@@ -69,7 +54,17 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $rules = [
+            "comment" => ["required", "string", "max:255"],
+        ];
+
+        $this->validate($request, $rules);
+
+        $comment->update([
+            "comment" => $request->comment,
+        ]);
+
+        return $this->showMessage("Comment updated successfully");
     }
 
     /**
@@ -80,6 +75,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+
+        return $this->showMessage("Comment Successfully Deleted", 200);
     }
 }
