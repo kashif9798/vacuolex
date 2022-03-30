@@ -1,15 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MicrobeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\MicrobeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,31 @@ Route::get("/", function(){
 
 Route::get("/login", function(){
   return redirect()->route("login.form");
+});
+
+//storage-link
+Route::get('/storage-link/create', function () {
+  Artisan::call('storage:link');
+
+  return "Storage Link created!";
+});
+
+// Clear cache
+Route::get('/clear', function () {
+  Artisan::call('optimize:clear');
+  Artisan::call('cache:clear');
+  Artisan::call('config:clear');
+  Artisan::call('config:cache');
+  Artisan::call('view:clear');
+  
+  return "Cache Cleared!";
+});
+
+// Application key generate
+Route::get('/key/generate', function () {
+  Artisan::call('key:generate');
+
+  return "Key Generated!";
 });
 
 Route::prefix("admin")->group(function () {
@@ -70,6 +96,5 @@ Route::post("subscribers/search", [UserController::class, "index"])->name("subsc
 Route::resource("microbes", MicrobeController::class)->except(["show"]);
 Route::post("microbes/search", [MicrobeController::class, "index"])->name("microbes.search");
 Route::post("microbes/repo/images", [MicrobeController::class, "repoImages"])->name("microbes.images");
-
 
 });

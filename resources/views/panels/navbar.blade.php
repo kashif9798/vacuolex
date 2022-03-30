@@ -29,7 +29,7 @@
               </g>
             </svg>
           </span>
-          <h2 class="brand-text mb-0">Vuexy</h2>
+          <h2 class="brand-text mb-0">VacuoleX</h2>
         </a>
       </li>
     </ul>

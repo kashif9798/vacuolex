@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
 
         $subCategoryQuantity = 100;
 
-        Microbe::factory()
-            ->count($subCategoryQuantity)
-            ->create();
+        // Microbe::factory()
+        //     ->count($subCategoryQuantity)
+        //     ->create();
     }
 }
